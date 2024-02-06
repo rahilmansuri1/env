@@ -24,4 +24,4 @@ jobs:
     - name: Run tests
       env:
         YOUR_SECRET: ${{ secrets.SECRETVALUE }}
-      run: node -e "console.log(process.env.YOUR_SECRET)"
+      run: node app.js

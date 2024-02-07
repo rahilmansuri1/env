@@ -1,2 +1,2 @@
 # env
-![jenkins-status](jenkins-status.png 'jenkins-status')
+![jenkins-status](jenkins-status.png)

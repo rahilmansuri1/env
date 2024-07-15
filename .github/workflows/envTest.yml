@@ -10,15 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code with submodules
         uses: actions/checkout@v3
+        with:
+          submodules: true
+          fetch-depth: 1
+          submodule-fetch-depth: 1
 
       - name: Install Rust
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          source "$HOME/.cargo/env"
 
-      - name: Verify Rust installation
-        run: rustc --version
+      - name: Clone rgb-lightning-node repository with submodules
+        run: git clone https://github.com/RGB-Tools/rgb-lightning-node --recurse-submodules --shallow-submodules
 
-      # Add more steps here as needed
+      - name: Build the project in debug mode
+        working-directory: rgb-lightning-node
+        run: cargo build --debug
+
+      - name: List generated binaries
+        run: ls -l target/debug/

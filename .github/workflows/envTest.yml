@@ -28,7 +28,7 @@ jobs:
 
       - name: Build the project in debug mode
         working-directory: rgb-lightning-node
-        run: cargo build --debug
+        run: cargo install --debug --path .
 
       - name: List generated binaries
         run: ls -l target/debug/

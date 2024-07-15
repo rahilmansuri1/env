@@ -9,50 +9,34 @@ on:
       - main
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code with submodules
+      - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          submodules: true
-          fetch-depth: 1
-          submodule-fetch-depth: 1
 
       - name: Install Rust
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-          source "$HOME/.cargo/env"
 
-      - name: Clone rgb-lightning-node repository with submodules
-        run: git clone https://github.com/RGB-Tools/rgb-lightning-node --recurse-submodules --shallow-submodules
+      - name: Verify Rust installation
+        run: rustc --version
 
-      - name: Set environment variables from secrets
-        env:
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          AUTH_URI: ${{ secrets.AUTH_URI }}
-          TOKEN_URI: ${{ secrets.TOKEN_URI }}
-          AUTH_PROVIDER_CERT_URL: ${{ secrets.AUTH_PROVIDER_CERT_URL }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Rust
         run: |
-          echo "client_config = {" > config.py
-          echo "    'installed': {" >> config.py
-          echo "        'client_id': '${CLIENT_ID}'," >> config.py
-          echo "        'project_id': '${PROJECT_ID}'," >> config.py
-          echo "        'auth_uri': '${AUTH_URI}'," >> config.py
-          echo "        'token_uri': '${TOKEN_URI}'," >> config.py
-          echo "        'auth_provider_x509_cert_url': '${AUTH_PROVIDER_CERT_URL}'," >> config.py
-          echo "        'client_secret': '${CLIENT_SECRET}'," >> config.py
-          echo "    }," >> config.py
-          echo "}" >> config.py
-          cat config.py
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      # - name: Build the project in debug mode
-      #   working-directory: rgb-lightning-node
-      #   run: cargo build --debug
+      - name: Verify Rust installation
+        run: rustc --version
 
-      # - name: List generated binaries
-      #   run: ls -l target/debug/
+      # Add more steps here as needed

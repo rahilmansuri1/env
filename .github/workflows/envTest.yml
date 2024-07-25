@@ -18,6 +18,11 @@ jobs:
 
       - name: Install Rust
         run: |
-          echo "ARCH=$(uname -m)" >> $GITHUB_ENV
-          APPIMAGE_NAME="iriswallet-${{ env.ARCH }}.AppImage"
+          ARCH=$(uname -m)
+          APPIMAGE_NAME="iriswallet-${ARCH}.AppImage"
           echo $APPIMAGE_NAME
+      - name: check app name
+        run: |
+          echo $APPIMAGE_NAME
+
+          
